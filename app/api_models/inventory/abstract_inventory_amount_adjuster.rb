@@ -1,3 +1,5 @@
+require_relative './abstract_inventory_amount_adjuster.rb'
+
 module ApiModel
 module Inventory
 class AbstractInventoryAmountAdjuster
@@ -17,14 +19,11 @@ class AbstractInventoryAmountAdjuster
 
     def initialize(inventory_item,amount)
         @inventory_item = inventory_item
-        @amount         = amount
+        @amount         = amount.to_i
     end
   
     def update_db
-		# Run validation. 
-        if not valid?
-            return false
-        end
+        # Implement in sub-classes.
 	end
   
     def persisted?

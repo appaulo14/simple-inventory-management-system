@@ -17,7 +17,7 @@ end
 shared_examples_for 'an individual item GET request' do
   context 'when the record exists' do
 	before(:each) do
-		@item=FactoryBot.create(@mock_name)
+		@item=FactoryBot.create(@mock_name,distribution_center_id: @distribution_center.id)
 		get "#{@request_string_prefix}/#{@item.id}"
 	end
   
@@ -41,65 +41,61 @@ shared_examples_for 'an individual item GET request' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find/)
+        expect(response.body).to match(/not found/)
       end
     end
 end
 
 shared_examples_for "it validates the 'amount' parameter" do
 	before(:each) do
-		@item=FactoryBot.create(@mock_name)
+		@item=FactoryBot.create(@mock_name, distribution_center_id: @distribution_center.id)
 	end
 
 	context 'when amount parameter is missing' do
-		let(:invalid_attributes) { { operation: @operation}}
-		before { patch "#{@request_string_prefix}/#{@item.id}", params: invalid_attributes }
+		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: {} }
 
 		it 'return status code 422' do
 			expect(response).to have_http_status(422)
 		end
 
 		it 'should give a proper error message' do
-			expect(response.body).to match(/Missing required parameter 'amount'/)
+			expect(response.body).to match(/must be greater than 0/)
 		end
 	end
 
 	context 'when amount parameter is not a number' do
-		let(:invalid_attributes) { { operation: @operation, amount: 'paul'}}
-		before { patch "#{@request_string_prefix}/#{@item.id}", params: invalid_attributes }
+		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 'paul' } }
 
 		it 'return status code 422' do
 			expect(response).to have_http_status(422)
 		end
 
 		it 'should give a proper error message' do
-			expect(response.body).to match(/Parameter 'amount' must be an integer greater than 0/)
+			expect(response.body).to match(/must be greater than 0/)
 		end
 	end
 
 	context 'when amount parameter is a negative number' do
-		let(:invalid_attributes) { { operation: @operation, amount: -1}}
-		before { patch "#{@request_string_prefix}/#{@item.id}", params: invalid_attributes }
+		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: -1 } }
 
 		it 'return status code 422' do
 			expect(response).to have_http_status(422)
 		end
 
 		it 'should give a proper error message' do
-			expect(response.body).to match(/Parameter 'amount' must be an integer greater than 0/)
+			expect(response.body).to match(/must be greater than 0/)
 		end
 	end
 
 	context 'when amount parameter is 0' do
-		let(:invalid_attributes) { { operation: @operation, amount: 0}}
-		before { patch "#{@request_string_prefix}/#{@item.id}", params: invalid_attributes }
+		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 0 } }
 
 		it 'return status code 422' do
 			expect(response).to have_http_status(422)
 		end
 
 		it 'should give a proper error message' do
-			expect(response.body).to match(/Parameter 'amount' must be an integer greater than 0/)
+			expect(response.body).to match(/must be greater than 0/)
 		end
 	end
 end

@@ -10,7 +10,7 @@ class InventoryController < ApplicationController
   before_action :confirm_exists_in_distribution_center_and_set_inventory_item,
     :only => [:show, :add_to_available_amount, :remove_from_available_amount, 
               :reserve, :move_reserved_back_to_available, :remove_reserved]
-  before action :set_all_inventory_in_distribution_center,
+  before_action :set_all_inventory_in_distribution_center,
     :only => [:index, :report]
 
   # GET /inventory
@@ -55,7 +55,6 @@ class InventoryController < ApplicationController
 	api_model                = ApiModel::Inventory::RemoveFromAvailableAmount.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
-	end
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/reserve
@@ -63,7 +62,6 @@ class InventoryController < ApplicationController
 	api_model                = ApiModel::Inventory::Reserve.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
-	end
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/move_reserved_back_to_available
@@ -96,7 +94,7 @@ class InventoryController < ApplicationController
     def confirm_exists_in_distribution_center_and_set_inventory_item
         id                     = params[:id]
         distribution_center_id = params[:distribution_center_id]
-        @inventory_item = Inventory.where({id: id,distribution_center_id: distribution_center_id).first
+        @inventory_item = Inventory.where({id: id,distribution_center_id: distribution_center_id}).first
         if @inventory_item.nil?
             return render status: 404, json: { message: "Inventory item with id '#{id}' from distribution center '#{distribution_center_id}' not found." }.to_json
         end
@@ -104,7 +102,7 @@ class InventoryController < ApplicationController
 
     def set_all_inventory_in_distribution_center
         distribution_center_id = params[:distribution_center_id]
-        if not DistributionCenter.exist?(distribution_center_id)
+        if not DistributionCenter.exists?(distribution_center_id)
             return render status: 404, json: { message: "Distribution center with id of '#{distribution_center_id}' not found." }.to_json
         end
         @inventory_items = Inventory.where({distribution_center_id: distribution_center_id})

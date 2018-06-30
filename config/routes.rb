@@ -2,7 +2,7 @@ Rails.application.routes.draw do
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
     resources :distribution_centers, only: [:index, :show] do
         resources :inventory, only: [:index, :show] do
-            get 'report', on :member
+            get 'report', on: :member
 
             # We use patch instead of put because patch is specifically for partial updates.
             # See: http://www.rfc-editor.org/rfc/rfc5789.txt

@@ -1,12 +1,15 @@
-module ApiModel
-module Inventory
-class RemoveFromAvailableAmount < AbstractInventoryAmountAdjuster
+require_relative './abstract_inventory_amount_adjuster.rb'
+
+class ApiModel::Inventory::RemoveFromAvailableAmount < ApiModel::Inventory::AbstractInventoryAmountAdjuster
     
     def update_db()
-        super
+        # Don't update db if attributes not valid.
+        if not valid?
+            return false
+        end
 
         begin 
-            Inventory.update_counters @inventory_item.id, :available_amount => -(@amount.abs)
+            @inventory_item.decrement!(:available_amount, @amount.abs)
 			@update_db_success_msg = "#{@amount} successfully removed from available amount for inventory item #{@inventory_item.id}."
 			return true
         rescue ActiveRecord::StatementInvalid => ex
@@ -18,6 +21,4 @@ class RemoveFromAvailableAmount < AbstractInventoryAmountAdjuster
 			return false
         end
     end
-end
-end
 end

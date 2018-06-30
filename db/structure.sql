@@ -4,8 +4,8 @@ CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name"
 CREATE TABLE "distribution_centers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "location" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "name" varchar);
 CREATE TABLE inventories(
                   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                  available_amount UNSIGNED BIG INT NOT NULL CHECK(available_amount >=0), 
-                  reserved_amount UNSIGNED BIG INT NOT NULL CHECK(reserved_amount >= 0),
+                  available_amount UNSIGNED BIG INT NOT NULL CONSTRAINT available_amount_cannot_go_below_zero CHECK(available_amount >=0), 
+                  reserved_amount UNSIGNED BIG INT NOT NULL CONSTRAINT reserved_amount_cannot_go_below_zero CHECK(reserved_amount >= 0),
                   product_id INTEGER NOT NULL UNIQUE,
                   distribution_center_id INTEGER NOT NULL, 
                   FOREIGN KEY(product_id) REFERENCES products(id), 

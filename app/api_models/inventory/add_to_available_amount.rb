@@ -1,19 +1,20 @@
-module ApiModel
-module Inventory
-class AddToAvailableAmount < AbstractInventoryAmountAdjuster
+require_relative './abstract_inventory_amount_adjuster.rb'
+
+class ApiModel::Inventory::AddToAvailableAmount < ApiModel::Inventory::AbstractInventoryAmountAdjuster
     
     def update_db()
-        super
+        # Don't update db if attributes not valid.
+        if not valid?
+            return false
+        end
 
         begin 
-            Inventory.update_counters @inventory_item.id, :available_amount => @amount
-			@update_db_success_msg = "#{@amount} successfully added to inventory item #{@inventory_item.id}."
+            @inventory_item.increment!(:available_amount,@amount)
+			@update_db_success_msg = "#{@amount} successfully added to the available amount of inventory item #{@inventory_item.id}."
 			return true
         rescue ActiveRecord::StatementInvalid => ex
             @update_db_error_msg = "Unknown database error."
             return false
         end
     end
-end
-end
 end

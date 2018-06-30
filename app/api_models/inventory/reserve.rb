@@ -1,9 +1,12 @@
-module ApiModel
-module Inventory
-class Reserve < AbstractInventoryAmountAdjuster
+require_relative './abstract_inventory_amount_adjuster.rb'
+
+class ApiModel::Inventory::Reserve < ApiModel::Inventory::AbstractInventoryAmountAdjuster
     
     def update_db()
-        super
+        # Don't update db if attributes not valid.
+        if not valid?
+            return false
+        end
 
         begin 
             Inventory.update_counters @inventory_item.id, :available_amount => -(@amount.abs), :reserved_amount => @amount
@@ -18,6 +21,4 @@ class Reserve < AbstractInventoryAmountAdjuster
             return false
         end
     end
-end
-end
 end
