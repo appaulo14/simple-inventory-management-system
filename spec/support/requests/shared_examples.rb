@@ -9,19 +9,19 @@ shared_examples_for 'a collection GET request' do
     it 'returns status code 200' do
       expect(response).to have_http_status(200)
     end
-	
+    
 end
 
 shared_examples_for 'an individual item GET request' do
   context 'when the record exists' do
-	before(:each) do
-		if not @distribution_center.nil?
-			@item=FactoryBot.create(@mock_name,distribution_center_id: @distribution_center.id)
-		else
-			@item=FactoryBot.create(@mock_name)
-		end
-		get "#{@request_string_prefix}/#{@item.id}"
-	end
+    before(:each) do
+        if not @distribution_center.nil?
+            @item=FactoryBot.create(@mock_name,distribution_center_id: @distribution_center.id)
+        else
+            @item=FactoryBot.create(@mock_name)
+        end
+        get "#{@request_string_prefix}/#{@item.id}"
+    end
   
       it 'returns the individual item' do
         expect(json).not_to be_empty
@@ -34,9 +34,9 @@ shared_examples_for 'an individual item GET request' do
     end
 
     context 'when the record does not exist' do
-		before(:each) do
-			get "#{@request_string_prefix}/1000000"
-		end
+        before(:each) do
+            get "#{@request_string_prefix}/1000000"
+        end
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
@@ -49,55 +49,55 @@ shared_examples_for 'an individual item GET request' do
 end
 
 shared_examples_for "it validates the 'amount' parameter" do
-	before(:each) do
-		@item=FactoryBot.create(@mock_name, distribution_center_id: @distribution_center.id)
-	end
+    before(:each) do
+        @item=FactoryBot.create(@mock_name, distribution_center_id: @distribution_center.id)
+    end
 
-	context 'when amount parameter is missing' do
-		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: {} }
+    context 'when amount parameter is missing' do
+        before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: {} }
 
-		it 'return status code 422' do
-			expect(response).to have_http_status(422)
-		end
+        it 'return status code 422' do
+            expect(response).to have_http_status(422)
+        end
 
-		it 'should give a proper error message' do
-			expect(response.body).to match(/must be greater than 0/)
-		end
-	end
+        it 'should give a proper error message' do
+            expect(response.body).to match(/must be greater than 0/)
+        end
+    end
 
-	context 'when amount parameter is not a number' do
-		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 'paul' } }
+    context 'when amount parameter is not a number' do
+        before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 'paul' } }
 
-		it 'return status code 422' do
-			expect(response).to have_http_status(422)
-		end
+        it 'return status code 422' do
+            expect(response).to have_http_status(422)
+        end
 
-		it 'should give a proper error message' do
-			expect(response.body).to match(/must be greater than 0/)
-		end
-	end
+        it 'should give a proper error message' do
+            expect(response.body).to match(/must be greater than 0/)
+        end
+    end
 
-	context 'when amount parameter is a negative number' do
-		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: -1 } }
+    context 'when amount parameter is a negative number' do
+        before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: -1 } }
 
-		it 'return status code 422' do
-			expect(response).to have_http_status(422)
-		end
+        it 'return status code 422' do
+            expect(response).to have_http_status(422)
+        end
 
-		it 'should give a proper error message' do
-			expect(response.body).to match(/must be greater than 0/)
-		end
-	end
+        it 'should give a proper error message' do
+            expect(response.body).to match(/must be greater than 0/)
+        end
+    end
 
-	context 'when amount parameter is 0' do
-		before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 0 } }
+    context 'when amount parameter is 0' do
+        before { patch "#{@request_string_prefix}/#{@item.id}/#{@operation}", params: { amount: 0 } }
 
-		it 'return status code 422' do
-			expect(response).to have_http_status(422)
-		end
+        it 'return status code 422' do
+            expect(response).to have_http_status(422)
+        end
 
-		it 'should give a proper error message' do
-			expect(response.body).to match(/must be greater than 0/)
-		end
-	end
+        it 'should give a proper error message' do
+            expect(response.body).to match(/must be greater than 0/)
+        end
+    end
 end

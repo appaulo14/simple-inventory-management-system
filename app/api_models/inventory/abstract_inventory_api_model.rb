@@ -6,6 +6,6 @@ class AbstractInventoryApiModel
   
   
     def persisted?
-	  return false
+      return false
     end
 end

@@ -10,16 +10,16 @@ class RemoveFromAvailableAmount < AbstractInventoryAmountAdjuster
 
         begin 
             @inventory_item.decrement!(:available_amount, @amount.abs)
-			@update_db_success_msg = "#{@amount} successfully removed from available amount for inventory item #{@inventory_item.id}."
-			return true
+            @update_db_success_msg = "#{@amount} successfully removed from available amount for inventory item #{@inventory_item.id}."
+            return true
         rescue ActiveRecord::StatementInvalid => ex
             if ex.to_s.include? "available_amount_cannot_go_below_zero"
-				@inventory_item.reload()
+                @inventory_item.reload()
                 @update_db_error_msg = "Available inventory amount cannot go below 0. Current amount: #{@inventory_item.available_amount}. Amount attempting to remove: #{amount}."
             else
                 @update_db_error_msg = "Unknown database error."
             end
-			return false
+            return false
         end
     end
 end
