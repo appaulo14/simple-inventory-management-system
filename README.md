@@ -7,7 +7,7 @@ Simple Inventory Management System provides a way to simply manage inventory lev
 There are three main resources:
 * __Products:__ A unique type of an item, such as a Toyota Corolla or iPhone 6s gold model A1634. 
 * __Distribution Centers:__ Physical places that stores inventory.
-* __Inventory:__ A inventory item represents a specific product in a specific distribution center. For example, an inventory item might contain the information on how many Toyota Corollas are available and reserved at the Japan distribution center.  
+* __Inventory:__ An inventory item represents a specific product in a specific distribution center. For example, an inventory item might contain the information on how many Toyota Corollas are available and reserved at the Japan distribution center.  
 
 # Available REST Routes
 |Verb  | URI Pattern | Description |
