@@ -1,5 +1,4 @@
-module ApiModel
-module Inventory
+
 class AbstractInventoryApiModel
     include ActiveModel::Validations
     include ActiveModel::Conversion
@@ -9,6 +8,4 @@ class AbstractInventoryApiModel
     def persisted?
 	  return false
     end
-end
-end
 end

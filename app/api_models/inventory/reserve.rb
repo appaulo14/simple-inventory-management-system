@@ -1,6 +1,6 @@
 require_relative './abstract_inventory_amount_adjuster.rb'
 
-class ApiModel::Inventory::Reserve < ApiModel::Inventory::AbstractInventoryAmountAdjuster
+class Reserve < AbstractInventoryAmountAdjuster
     
     def update_db()
         # Don't update db if attributes not valid.

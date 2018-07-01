@@ -1,5 +1,5 @@
 class DistributionCentersController < ApplicationController
-  before_action :set_distribution_center, only: [:show, :show_inventory]
+  before_action :set_distribution_center, only: [:show]
 
   # GET /distribution_centers
   def index
@@ -10,11 +10,6 @@ class DistributionCentersController < ApplicationController
   # GET /distribution_centers/:id
   def show
     json_response(@distribution_center)
-  end
-
-  # GET /distribution_centers/:id/inventory
-  def show_inventory
-    json_response(@distribution_center.inventory)
   end
 
   private

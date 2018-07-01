@@ -1,6 +1,6 @@
 require_relative './abstract_inventory_api_model.rb'
 
-class ApiModel::Inventory::Report < ApiModel::Inventory::AbstractInventoryApiModel
+class Report < AbstractInventoryApiModel
 	
 	attr_accessor :distribution_center_id
 	
@@ -20,7 +20,7 @@ class ApiModel::Inventory::Report < ApiModel::Inventory::AbstractInventoryApiMod
 			'products.description as product_description'
 		]
 		select_string = select_columns.join(',')
-		results = Rails::Application::Inventory.select(select_string).
+		results = Inventory.select(select_string).
 			joins('INNER JOIN distribution_centers on inventories.distribution_center_id = distribution_centers.id').
 			joins('INNER JOIN products on inventories.product_id = products.id').
 			where(distribution_center_id: @distribution_center_id)

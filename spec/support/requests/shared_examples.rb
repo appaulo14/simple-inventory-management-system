@@ -10,14 +10,16 @@ shared_examples_for 'a collection GET request' do
       expect(response).to have_http_status(200)
     end
 	
-	it 'should maybe handle empty lists correctly.'
-	
 end
 
 shared_examples_for 'an individual item GET request' do
   context 'when the record exists' do
 	before(:each) do
-		@item=FactoryBot.create(@mock_name,distribution_center_id: @distribution_center.id)
+		if not @distribution_center.nil?
+			@item=FactoryBot.create(@mock_name,distribution_center_id: @distribution_center.id)
+		else
+			@item=FactoryBot.create(@mock_name)
+		end
 		get "#{@request_string_prefix}/#{@item.id}"
 	end
   
@@ -33,7 +35,7 @@ shared_examples_for 'an individual item GET request' do
 
     context 'when the record does not exist' do
 		before(:each) do
-			get "#{@request_string_prefix}/1000"
+			get "#{@request_string_prefix}/1000000"
 		end
 
       it 'returns status code 404' do
@@ -41,7 +43,7 @@ shared_examples_for 'an individual item GET request' do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/not found/)
+        expect(response.body).to match(/|Couldn't find|not found/)
       end
     end
 end

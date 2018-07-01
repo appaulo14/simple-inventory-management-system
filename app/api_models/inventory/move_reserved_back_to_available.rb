@@ -1,6 +1,6 @@
 require_relative './abstract_inventory_amount_adjuster.rb'
 
-class ApiModel::Inventory::MoveReservedBackToAvailable < ApiModel::Inventory::AbstractInventoryAmountAdjuster
+class MoveReservedBackToAvailable < AbstractInventoryAmountAdjuster
 
     
     def update_db()

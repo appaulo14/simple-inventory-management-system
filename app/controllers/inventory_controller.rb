@@ -14,13 +14,15 @@ class InventoryController < ApplicationController
   before_action :set_all_inventory_in_distribution_center,
 	:only => [:index]
 
-  # GET /inventory
+  # GET /distribution_centers/:distribution_center_id/inventory
   def index
     json_response(@inventory_items)
   end
 
+  # GET /distribution_centers/:distribution_center_id/inventory/report
+  # GET /distribution_centers/:distribution_center_id/inventory/report_as_json
   def report_as_json
-    api_model = ApiModel::Inventory::Report.new(params[:distribution_center_id])
+    api_model = Report.new(params[:distribution_center_id])
 	# Skipping querying if parameters are invalid.
 	if not api_model.valid?
 		return render status: 422, json: { message: api_model.errors }.to_json
@@ -34,8 +36,9 @@ class InventoryController < ApplicationController
 	end
   end 
   
+  # GET /distribution_centers/:distribution_center_id/inventory/report_as_csv
   def report_as_csv
-	api_model = ApiModel::Inventory::Report.new(params[:distribution_center_id])
+	api_model = Report.new(params[:distribution_center_id])
 	# Skipping querying if parameters are invalid.
 	if not api_model.valid?
 		return render status: 422, json: { message: api_model.errors }.to_json
@@ -59,35 +62,35 @@ class InventoryController < ApplicationController
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/add_to_available_amount
   def add_to_available_amount
-	api_model                = ApiModel::Inventory::AddToAvailableAmount.new(@inventory_item,params[:amount])
+	api_model                = AddToAvailableAmount.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
   end
 
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/remove_from_available_amount
   def remove_from_available_amount
-	api_model                = ApiModel::Inventory::RemoveFromAvailableAmount.new(@inventory_item,params[:amount])
+	api_model                = RemoveFromAvailableAmount.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/reserve
   def reserve
-	api_model                = ApiModel::Inventory::Reserve.new(@inventory_item,params[:amount])
+	api_model                = Reserve.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/move_reserved_back_to_available
   def move_reserved_back_to_available
-	api_model                = ApiModel::Inventory::MoveReservedBackToAvailable.new(@inventory_item,params[:amount])
+	api_model                = MoveReservedBackToAvailable.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/remove_reserved
   def remove_reserved
-	api_model                = ApiModel::Inventory::RemoveReserved.new(@inventory_item,params[:amount])
+	api_model                = RemoveReserved.new(@inventory_item,params[:amount])
 	was_operation_successful = api_model.update_db()
 	handle_response_for_update_operation(was_operation_successful,api_model)
   end
