@@ -28,8 +28,7 @@ There are three main resources:
 |PATCH | /distribution_centers/:distribution_center_id/inventory/:id/remove_reserved | Remove reserved stock (such as due to it being shipped out) for the specified inventory item. | 
                                                               
 
-# How to Install & Run This Web Application
-### Installation of Ruby on Rails
+# How to Install Ruby on Rails (If needed)
 [Follow the guide here to install Ruby on Rails for your chosen OS](http://installrails.com/)
 
 # Simple Deployment in a development environment
@@ -69,6 +68,9 @@ Below are two guides for deploy on AWS and Azure respectively:
 * [Creating and Deploying Ruby Applications on AWS Elastic Beanstalk](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_Ruby.html)
 * [Build a Ruby and Postgres web app in Azure App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-ruby-postgres-app)
 
+### Testing Performance in a Production-Simulation Environment
+One tool that can be used to measure the performance and do load testing of the deployed web application is [httperf](https://github.com/httperf/httperf). This should be run on a deployment as similar as possible to the production environment but not on the production environment itself. See [Performance Testing With httperf](http://www.mervine.net/performance-testing-with-httperf) for more best practices and tips. 
+
 ### Additional AWS Best Practices 
 * [AWS Web Hosting Best Practices](https://d1.awsstatic.com/whitepapers/aws-web-hosting-best-practices.pdf) 
 * [AWS Cloud best practices](https://d1.awsstatic.com/whitepapers/AWS_Cloud_Best_Practices.pdf)
@@ -79,21 +81,13 @@ Below are two guides for deploy on AWS and Azure respectively:
 * [Azure reference architecture for scale-able web applications](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/scalable-web-app)
 * [Scaling out with Azure SQL database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-elastic-scale-introduction)
 
-# Testing Performance in a Deployed, Production-Simulation Environment
-One tool that can be used to measure the performance of the deployed web application is [httperf](https://github.com/httperf/httperf). This should be run on a deployment as similar as possible to the production environment but not on the production environment itself of course. See [Performance Testing With httperf](http://www.mervine.net/performance-testing-with-httperf) for more best practices and tips. 
 
 # Further Possible Enhancements
-* Switch from SQLite to a production-ready data such as PostgreSQL or MySQL. 
-* Addition/update/deletion of products/distribution centers/and inventory items as needed. 
-* Improve scaleability to based on requirements.
-  * For example: [Azure reference architecture for scaleable web applications](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/scalable-web-app)
-  * It may be worth having auto-scaling for the web servers and databases, although different methods are needed between the two. 
+* Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
 * Batch update
 * Authentication/Authentication
 * Allow client to filter and pagination results
 * Allow inventory to be referenced by distribution-center-specific ids. 
-* Load testing.
-  * http://httpd.apache.org/docs/2.2/programs/ab.html
-* More concurrency/atomic update testing.
-* Cache optimization
-* Add automated tests for ApiModel classes. 
+* Addition/update/deletion of products/distribution centers/and inventory items as needed. 
+* More race-condition/load/stress testing.
+* Add automated tests for classes under app/api_models. 
