@@ -9,12 +9,12 @@ class ProductsController < ApplicationController
   
   # GET /products/:id
   def show
-	json_response(@product)
+    json_response(@product)
   end
   
   private 
   
     def set_product
-		@product = Product.find(params[:id])
-	end
+        @product = Product.find(params[:id])
+    end
 end

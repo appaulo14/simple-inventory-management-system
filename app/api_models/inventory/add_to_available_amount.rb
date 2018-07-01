@@ -10,8 +10,8 @@ class AddToAvailableAmount < AbstractInventoryAmountAdjuster
 
         begin 
             @inventory_item.increment!(:available_amount,@amount)
-			@update_db_success_msg = "#{@amount} successfully added to the available amount of inventory item #{@inventory_item.id}."
-			return true
+            @update_db_success_msg = "#{@amount} successfully added to the available amount of inventory item #{@inventory_item.id}."
+            return true
         rescue ActiveRecord::StatementInvalid => ex
             @update_db_error_msg = "Unknown database error."
             return false

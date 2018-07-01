@@ -12,9 +12,9 @@ class InventoryController < ApplicationController
     :only => [:show, :add_to_available_amount, :remove_from_available_amount, 
               :reserve, :move_reserved_back_to_available, :remove_reserved]
   before_action :set_all_inventory_in_distribution_center,
-	:only => [:index]
+    :only => [:index]
   before_action :confirm_distribution_center_exists, 
-	:only => [:report, :report_as_json, :report_as_csv]
+    :only => [:report, :report_as_json, :report_as_csv]
 
   # GET /distribution_centers/:distribution_center_id/inventory
   def index
@@ -25,33 +25,33 @@ class InventoryController < ApplicationController
   # GET /distribution_centers/:distribution_center_id/inventory/report_as_json
   def report_as_json
     api_model = Report.new(params[:distribution_center_id])
-	# Skipping querying if parameters are invalid.
-	if not api_model.valid?
-		return render status: 422, json: { message: api_model.errors }.to_json
-	end
-	
-	begin
-		query_results = api_model.query()
-		json_response(query_results)
-	rescue ActiveRecord::StatementInvalid => ex
-		return render status: 409, json: { message: "Unknown database error." }.to_json
-	end
+    # Skipping querying if parameters are invalid.
+    if not api_model.valid?
+        return render status: 422, json: { message: api_model.errors }.to_json
+    end
+    
+    begin
+        query_results = api_model.query()
+        json_response(query_results)
+    rescue ActiveRecord::StatementInvalid => ex
+        return render status: 409, json: { message: "Unknown database error." }.to_json
+    end
   end 
   
   # GET /distribution_centers/:distribution_center_id/inventory/report_as_csv
   def report_as_csv
-	api_model = Report.new(params[:distribution_center_id])
-	# Skipping querying if parameters are invalid.
-	if not api_model.valid?
-		return render status: 422, json: { message: api_model.errors }.to_json
-	end
-	
-	begin
-		query_results = api_model.query()
-		csv_response(query_results)
-	rescue ActiveRecord::StatementInvalid => ex
-		return render status: 409, json: { message: "Unknown database error." }.to_json
-	end
+    api_model = Report.new(params[:distribution_center_id])
+    # Skipping querying if parameters are invalid.
+    if not api_model.valid?
+        return render status: 422, json: { message: api_model.errors }.to_json
+    end
+    
+    begin
+        query_results = api_model.query()
+        csv_response(query_results)
+    rescue ActiveRecord::StatementInvalid => ex
+        return render status: 409, json: { message: "Unknown database error." }.to_json
+    end
   end
 
   # GET /distribution_centers/:distribution_center_id/inventory/:id
@@ -64,56 +64,56 @@ class InventoryController < ApplicationController
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/add_to_available_amount
   def add_to_available_amount
-	api_model                = AddToAvailableAmount.new(@inventory_item,params[:amount])
-	was_operation_successful = api_model.update_db()
-	handle_response_for_update_operation(was_operation_successful,api_model)
+    api_model                = AddToAvailableAmount.new(@inventory_item,params[:amount])
+    was_operation_successful = api_model.update_db()
+    handle_response_for_update_operation(was_operation_successful,api_model)
   end
 
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/remove_from_available_amount
   def remove_from_available_amount
-	api_model                = RemoveFromAvailableAmount.new(@inventory_item,params[:amount])
-	was_operation_successful = api_model.update_db()
-	handle_response_for_update_operation(was_operation_successful,api_model)
+    api_model                = RemoveFromAvailableAmount.new(@inventory_item,params[:amount])
+    was_operation_successful = api_model.update_db()
+    handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/reserve
   def reserve
-	api_model                = Reserve.new(@inventory_item,params[:amount])
-	was_operation_successful = api_model.update_db()
-	handle_response_for_update_operation(was_operation_successful,api_model)
+    api_model                = Reserve.new(@inventory_item,params[:amount])
+    was_operation_successful = api_model.update_db()
+    handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/move_reserved_back_to_available
   def move_reserved_back_to_available
-	api_model                = MoveReservedBackToAvailable.new(@inventory_item,params[:amount])
-	was_operation_successful = api_model.update_db()
-	handle_response_for_update_operation(was_operation_successful,api_model)
+    api_model                = MoveReservedBackToAvailable.new(@inventory_item,params[:amount])
+    was_operation_successful = api_model.update_db()
+    handle_response_for_update_operation(was_operation_successful,api_model)
   end
   
   # PATCH /distribution_centers/:distribution_center_id/inventory/:id/remove_reserved
   def remove_reserved
-	api_model                = RemoveReserved.new(@inventory_item,params[:amount])
-	was_operation_successful = api_model.update_db()
-	handle_response_for_update_operation(was_operation_successful,api_model)
+    api_model                = RemoveReserved.new(@inventory_item,params[:amount])
+    was_operation_successful = api_model.update_db()
+    handle_response_for_update_operation(was_operation_successful,api_model)
   end
 
   private
 
-	def confirm_distribution_center_exists
-		if not DistributionCenter.exists? params[:distribution_center_id]
-			return render status: 404, json: { message: "Distribution center with id '#{params[:distribution_center_id]}' not found." }.to_json
-		end
-	end
+    def confirm_distribution_center_exists
+        if not DistributionCenter.exists? params[:distribution_center_id]
+            return render status: 404, json: { message: "Distribution center with id '#{params[:distribution_center_id]}' not found." }.to_json
+        end
+    end
   
-	def handle_response_for_update_operation(was_operation_successful,api_model)
-		if was_operation_successful
-			return render status: 200, json: { message:  api_model.update_db_success_msg }.to_json
-		elsif api_model.errors.count  > 0 # If validation error.
-			return render status: 422, json: { message: api_model.errors }.to_json
-		else # If Database-elated error. 
-			return render status: 409, json: { message: api_model.update_db_error_msg }.to_json
-		end
-	end
+    def handle_response_for_update_operation(was_operation_successful,api_model)
+        if was_operation_successful
+            return render status: 200, json: { message:  api_model.update_db_success_msg }.to_json
+        elsif api_model.errors.count  > 0 # If validation error.
+            return render status: 422, json: { message: api_model.errors }.to_json
+        else # If Database-elated error. 
+            return render status: 409, json: { message: api_model.update_db_error_msg }.to_json
+        end
+    end
   
     # update_counters() doesn't actually check that an inventory item exists so we do it here. 
     def confirm_exists_in_distribution_center_and_set_inventory_item
