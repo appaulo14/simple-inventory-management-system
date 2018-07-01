@@ -47,6 +47,7 @@ bundle install
 4. Create the database. 
 ```
 rails db:migrate
+rails db:migrate RAILS_ENV=test
 ```
 5. Generate the seed data. 
 ```
