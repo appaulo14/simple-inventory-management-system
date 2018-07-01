@@ -14,6 +14,7 @@ class RemoveReserved < AbstractInventoryAmountAdjuster
 			return true
         rescue ActiveRecord::StatementInvalid => ex
             if ex.to_s.include? "reserved_amount_cannot_go_below_zero"
+				@inventory_item.reload()
                 @update_db_error_msg = "Reserved inventory amount cannot go below 0. Current amount: #{@inventory_item.reserved_amount}. Amount attempting to remove: #{amount}."
             else
                 @update_db_error_msg = "Unknown database error."

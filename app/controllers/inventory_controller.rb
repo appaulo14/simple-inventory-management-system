@@ -13,6 +13,8 @@ class InventoryController < ApplicationController
               :reserve, :move_reserved_back_to_available, :remove_reserved]
   before_action :set_all_inventory_in_distribution_center,
 	:only => [:index]
+  before_action :confirm_distribution_center_exists, 
+	:only => [:report, :report_as_json, :report_as_csv]
 
   # GET /distribution_centers/:distribution_center_id/inventory
   def index
@@ -97,7 +99,10 @@ class InventoryController < ApplicationController
 
   private
 
-	def handle_response_for_query_operation
+	def confirm_distribution_center_exists
+		if not DistributionCenter.exists? params[:distribution_center_id]
+			return render status: 404, json: { message: "Distribution center with id '#{params[:distribution_center_id]}' not found." }.to_json
+		end
 	end
   
 	def handle_response_for_update_operation(was_operation_successful,api_model)
