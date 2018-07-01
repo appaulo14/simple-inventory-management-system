@@ -1,11 +1,8 @@
-require_relative './abstract_inventory_amount_adjuster.rb'
+require_relative './abstract_inventory_api_model.rb'
 
 module ApiModel
 module Inventory
-class AbstractInventoryAmountAdjuster
-    include ActiveModel::Validations
-    include ActiveModel::Conversion
-    extend ActiveModel::Naming
+class AbstractInventoryAmountAdjuster < ApiModel::Inventory::AbstractInventoryApiModel
   
     attr_accessor :inventory_item
     attr_accessor :amount
@@ -25,10 +22,6 @@ class AbstractInventoryAmountAdjuster
     def update_db
         # Implement in sub-classes.
 	end
-  
-    def persisted?
-	  return false
-    end
 end
 end
 end

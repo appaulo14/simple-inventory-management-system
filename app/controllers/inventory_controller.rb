@@ -1,4 +1,5 @@
 require 'csv'
+require_relative '../api_models/inventory/report.rb'
 require_relative '../api_models/inventory/add_to_available_amount.rb'
 require_relative '../api_models/inventory/remove_from_available_amount.rb'
 require_relative '../api_models/inventory/reserve.rb'
@@ -11,28 +12,41 @@ class InventoryController < ApplicationController
     :only => [:show, :add_to_available_amount, :remove_from_available_amount, 
               :reserve, :move_reserved_back_to_available, :remove_reserved]
   before_action :set_all_inventory_in_distribution_center,
-    :only => [:index, :report]
+	:only => [:index]
 
   # GET /inventory
   def index
-      json_response(@inventory_items)
+    json_response(@inventory_items)
   end
 
-  def report
-    if not params[:format].present?
-        format = "json"
-    else
-        format = params[:format]
-    end
-    if format == "json"
-        json_response(@inventory_items)
-    elsif format == "csv"
-        csv_response(@inventory_items)
-    else
-        return render status: 422, json: {
-            message: "The 'format' parameter must be set to either 'json' or 'csv'.",
-        }.to_json
-    end
+  def report_as_json
+    api_model = ApiModel::Inventory::Report.new(params[:distribution_center_id])
+	# Skipping querying if parameters are invalid.
+	if not api_model.valid?
+		return render status: 422, json: { message: api_model.errors }.to_json
+	end
+	
+	begin
+		query_results = api_model.query()
+		json_response(query_results)
+	rescue ActiveRecord::StatementInvalid => ex
+		return render status: 409, json: { message: "Unknown database error." }.to_json
+	end
+  end 
+  
+  def report_as_csv
+	api_model = ApiModel::Inventory::Report.new(params[:distribution_center_id])
+	# Skipping querying if parameters are invalid.
+	if not api_model.valid?
+		return render status: 422, json: { message: api_model.errors }.to_json
+	end
+	
+	begin
+		query_results = api_model.query()
+		csv_response(query_results)
+	rescue ActiveRecord::StatementInvalid => ex
+		return render status: 409, json: { message: "Unknown database error." }.to_json
+	end
   end
 
   # GET /distribution_centers/:distribution_center_id/inventory/:id
@@ -80,6 +94,9 @@ class InventoryController < ApplicationController
 
   private
 
+	def handle_response_for_query_operation
+	end
+  
 	def handle_response_for_update_operation(was_operation_successful,api_model)
 		if was_operation_successful
 			return render status: 200, json: { message:  api_model.update_db_success_msg }.to_json

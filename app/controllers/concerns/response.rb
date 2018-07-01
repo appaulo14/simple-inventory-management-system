@@ -7,8 +7,8 @@ module Response
 
   def csv_response(objects, status = :ok)
     csv_string = CSV.generate do |csv|
-        csv << Inventory.attribute_names
-        @inventory_items.all.each do |item|
+        csv << objects[0].attribute_names
+        objects.all.each do |item|
            csv << item.attributes.values
         end
     end

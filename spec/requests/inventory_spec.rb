@@ -163,7 +163,7 @@ RSpec.describe 'Inventory API', type: :request do
 	
 		it_should_behave_like "it validates the 'amount' parameter"
 	
-		it 'should raise return 409 response and not modify anything if the request tries to reserve than is available' do
+		it 'should raise return 409 response and not modify anything if the request tries to reserve more than is available' do
 			inventory = FactoryBot.create(:inventory, distribution_center_id: @distribution_center.id, available_amount: 5, reserved_amount: 10)
 			patch "#{@request_string_prefix}/#{inventory.id}/#{@operation}", params: { amount: 6 }
 			expect(response.status).to eq(409)
@@ -194,8 +194,8 @@ RSpec.describe 'Inventory API', type: :request do
 			context 'when multiple simultaneous users' do
 				# Based off https://blog.arkency.com/2015/09/testing-race-conditions/
 				it 'should handle race conditions correctly.' do
-					expect(ActiveRecord::Base.connection.pool.size).to eq(5)
-					concurrency_level = 4
+					expect(ActiveRecord::Base.connection.pool.size).to eq(30)
+					concurrency_level = 29
 					inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id,available_amount: concurrency_level - 1,reserved_amount: 0)
 					fail_occurred     = false
 					wait_for_it       = true

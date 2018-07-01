@@ -1,3 +1,4 @@
 
 config/secrets.yml.key
 *.log
+config/secrets.yml.enc
