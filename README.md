@@ -88,7 +88,8 @@ One tool that can be used to measure the performance and do load testing of the 
 * Batch update to reduce the number of requests against the server. 
 * More race-condition/load/stress testing.
 * Add automated tests for classes under app/api_models. 
+* Look for ways to optimize queries more. 
 * Authentication/Authentication
-* Allow client to filter and pagination results
+* Allow client to filter and pagination results.
 * Allow inventory to be referenced by distribution-center-specific ids. 
 * Addition/update/deletion of products/distribution centers/inventory items as needed. 
