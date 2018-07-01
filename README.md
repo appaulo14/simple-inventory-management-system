@@ -16,14 +16,14 @@ There are three main resources:
 |GET   | /products/:id | Get the info for the product with the specified id. | 
 |GET   | /distribution_centers  | List all distribution centers |    
 |GET   | /distribution_centers/:id | Get the info for the distribution center with the specified id. | 
-|GET   | /distribution_centers/:distribution_center_id/inventory/report | Report displaying the current stock on hand and current pend shipped inventory in json format (shortcut to report_as_json URI below). |
-|GET   | /distribution_centers/:distribution_center_id/inventory/report_as_json | Report displaying the current stock on hand and current pend shipped inventory in json format. |  
-|GET   | /distribution_centers/:distribution_center_id/inventory/report_as_csv | Report displaying the current stock on hand and current pend shipped inventory in csv format. |  
+|GET   | /distribution_centers/:distribution_center_id/inventory/report | Report displaying the current stock on hand and current pending shipped inventory in json format. (This is a shortcut to report_as_json URI below.) |
+|GET   | /distribution_centers/:distribution_center_id/inventory/report_as_json | Report displaying the current stock on hand and current pending shipped inventory in json format. |  
+|GET   | /distribution_centers/:distribution_center_id/inventory/report_as_csv | Report displaying the current stock on hand and current pending shipped inventory in csv format. |  
 |GET   | /distribution_centers/:distribution_center_id/inventory | List all inventory  |                                    
 |GET   | /distribution_centers/:distribution_center_id/inventory/:id | Get info for inventory item specified by id. |               
 |PATCH | /distribution_centers/:distribution_center_id/inventory/:id/add_to_available_amount | Add to the current stock on-hand for the specified inventory item. |          
 |PATCH | /distribution_centers/:distribution_center_id/inventory/:id/remove_from_available_amount | Remove from the current stock on-hand for the specified inventory item. |     
-|PATCH | /distribution_centers/:distribution_center_id/inventory/:id/reserve | Reserve some or all of the on-hand stock for the specified inventory item. |   
+|PATCH | /distribution_centers/:distribution_center_id/inventory/:id/reserve | Reserve some or all of the available on-hand stock for the specified inventory item. |   
 |PATCH | /distribution_centers/:distribution_center_id/inventory/:id/move_reserved_back_to_available | Move reserved stock back to available/on-hand stock for the specified inventory item. | 
 |PATCH | /distribution_centers/:distribution_center_id/inventory/:id/remove_reserved | Remove reserved stock (such as due to it being shipped out) for the specified inventory item. | 
                                                               
@@ -84,10 +84,10 @@ One tool that can be used to measure the performance and do load testing of the 
 
 # Further Possible Enhancements
 * Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
-* Batch update
+* Batch update to reduce the number of requests against the server. 
+* More race-condition/load/stress testing.
+* Add automated tests for classes under app/api_models. 
 * Authentication/Authentication
 * Allow client to filter and pagination results
 * Allow inventory to be referenced by distribution-center-specific ids. 
-* Addition/update/deletion of products/distribution centers/and inventory items as needed. 
-* More race-condition/load/stress testing.
-* Add automated tests for classes under app/api_models. 
+* Addition/update/deletion of products/distribution centers/inventory items as needed. 
