@@ -32,22 +32,34 @@ There are three main resources:
 ### Installation of Ruby on Rails
 [Follow the guide here to install Ruby on Rails for your chosen OS](http://installrails.com/)
 
-# How to run in a simple development environment
-1. Extract project to a directory.
-1. cd to the directory.
-1. 
+# Simple Deployment in a development environment
+1. Clone repository.
+```
+git clone https://github.com/appaulo14/simple-inventory-management-system.git
+```
+2. cd to the newly cloned repository.
+```
+cd simple-inventory-management-system
+```
+3. Install the gems for the application.
 ```
 bundle install
 ```
+4. Create the database. 
 ```
 rails db:migrate
 ```
+5. Generate the seed data. 
 ```
 rails db:seed 
 ```
-
+6. Confirm tests pass.
 ```
-rails -s 
+rails spec
+```
+7. Start the server in development mode. 
+```
+rails s 
 ```
 
 # Production Deployment
@@ -57,19 +69,13 @@ Below are two guides for deploy on AWS and Azure respectively:
 * [Creating and Deploying Ruby Applications on AWS Elastic Beanstalk](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_Ruby.html)
 * [Build a Ruby and Postgres web app in Azure App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-ruby-postgres-app)
 
-# Additional Info On Production Deployment in the Cloud
-These days there are many reference architectures, design patterns, and best practices for web application cloud deployments.
-
-#### Example Reference Architecture
-![](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/images/scalable-web-app.png)
-
-### AWS Best Practices 
+### Additional AWS Best Practices 
 * [AWS Web Hosting Best Practices](https://d1.awsstatic.com/whitepapers/aws-web-hosting-best-practices.pdf) 
 * [AWS Cloud best practices](https://d1.awsstatic.com/whitepapers/AWS_Cloud_Best_Practices.pdf)
 * [AWS guidelines for both horizontally and vertically scaling relational database](https://aws.amazon.com/blogs/database/scaling-your-amazon-rds-instance-vertically-and-horizontally/)
 * [AWS Cloud Architecture Guidelines in 5 Pillars (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization)](https://d1.awsstatic.com/whitepapers/architecture/AWS_Well-Architected_Framework.pdf)
 
-### Azure Best Practices
+### Additional Azure Best Practices
 * [Azure reference architecture for scale-able web applications](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/scalable-web-app)
 * [Scaling out with Azure SQL database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-elastic-scale-introduction)
 
