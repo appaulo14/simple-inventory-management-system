@@ -84,10 +84,11 @@ One tool that can be used to measure the performance and do load testing of the 
 
 
 # Further Possible Enhancements
-* Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
-* Batch update to reduce the number of requests against the server. 
+* Add comments to use to generate RDoc for the classes.
+* Add automated tests for classes under app/api_models.
 * More race-condition/load/stress testing.
-* Add automated tests for classes under app/api_models. 
+* Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
+* Batch update to reduce the number of requests against the server.  
 * Look for ways to optimize queries more. 
 * Authentication/Authentication
 * Allow client to filter and pagination results.
