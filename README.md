@@ -84,7 +84,7 @@ One tool that can be used to measure the performance and do load testing of the 
 
 
 # Further Possible Enhancements
-* Add comments to use to generate RDoc for the classes.
+* Add comments for RDoc.
 * Add automated tests for classes under app/api_models.
 * More race-condition/load/stress testing.
 * Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
