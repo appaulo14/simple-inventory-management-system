@@ -1,16 +1,22 @@
 require_relative './abstract_inventory_api_model.rb'
 
+###
+# Produces a report of all the inventory for a given distribution center.
 class Report < AbstractInventoryApiModel
     
+    # The id of the distribution center for which to product the report.
     attr_accessor :distribution_center_id
     
+    # Validation
     validates :distribution_center_id, :presence => true,
                                        :numericality => { only_integer: true, greater_than: 0 }
     
+    # Constructor.
     def initialize(distribution_center_id)
         @distribution_center_id = distribution_center_id.to_i
     end
     
+    # Query the database for the report information.
     def query()
         select_columns = [
             'inventories.*',
