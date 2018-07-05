@@ -1,7 +1,9 @@
 require_relative './abstract_inventory_amount_adjuster.rb'
 
+###
+# Handles moving reserved stock back to available (on-hand stock) for 
+# the specified inventory item.
 class MoveReservedBackToAvailable < AbstractInventoryAmountAdjuster
-
     
     def update_db()
         # Don't update db if attributes not valid.

@@ -1,5 +1,8 @@
 require_relative './abstract_inventory_amount_adjuster.rb'
 
+###
+# Handles removing reserved stock (such as due to it being shipped out) 
+# for the specified inventory item.
 class RemoveReserved < AbstractInventoryAmountAdjuster
     
     def update_db()
