@@ -89,6 +89,7 @@ One tool that can be used to measure the performance and do load testing of the 
 * Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
 * Batch update to reduce the number of requests against the server.  
 * Look for ways to optimize queries more. 
+* Look for more shared test code to move into shared_examples.rb files. 
 * Authentication/Authentication
 * Allow client to filter and pagination results.
 * Allow inventory to be referenced by distribution-center-specific ids. 
