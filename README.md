@@ -84,9 +84,8 @@ One tool that can be used to measure the performance and do load testing of the 
 
 
 # Further Possible Enhancements
-* Add comments for RDoc.
-* Add automated tests for classes under app/api_models.
 * More race-condition/load/stress testing.
+* Add more validation for the amount attribute to the app/api_model/inventory/* classes as a first line of defense. The existing database constraints are the last line of defense.
 * Switch from SQLite to a more production-ready data such as PostgreSQL or MySQL and tune settings/indexes appropriately. 
 * Batch update to reduce the number of requests against the server.  
 * Look for ways to optimize queries more. 
@@ -94,3 +93,4 @@ One tool that can be used to measure the performance and do load testing of the 
 * Allow client to filter and pagination results.
 * Allow inventory to be referenced by distribution-center-specific ids. 
 * Addition/update/deletion of products/distribution centers/inventory items as needed. 
+* Move this list to the Issues section of this GitHub repo. 

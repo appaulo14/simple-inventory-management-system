@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+require_relative './shared_examples.rb'
 
 RSpec.describe 'Inventory API', type: :request do
   # initialize test data
@@ -58,7 +58,7 @@ RSpec.describe 'Inventory API', type: :request do
 
             context 'when multiple simultaneous users' do
                 # Based off https://blog.arkency.com/2015/09/testing-race-conditions/
-                it 'should handle race conditions correctly.' do
+                it 'should handle race conditions correctly.', :race_conditions => true do
                     concurrency_level = 99
                     expect(ActiveRecord::Base.connection.pool.size).to eq(concurrency_level + 1)
                     inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id,available_amount: 0)
@@ -118,7 +118,7 @@ RSpec.describe 'Inventory API', type: :request do
 
             context 'when multiple simultaneous users' do
                 # Based off https://blog.arkency.com/2015/09/testing-race-conditions/
-                it 'should handle race conditions correctly.' do
+                it 'should handle race conditions correctly.', :race_conditions => true do
                     concurrency_level = 99
                     expect(ActiveRecord::Base.connection.pool.size).to eq(concurrency_level + 1)
                     inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id, available_amount: concurrency_level - 1)
@@ -180,9 +180,9 @@ RSpec.describe 'Inventory API', type: :request do
                 expect(response).to have_http_status(200)
             end
 
-            context 'when multiple simultaneous users' do
+            context 'when multiple simultaneous users', :slow => true, :concurrency => true do
                 # Based off https://blog.arkency.com/2015/09/testing-race-conditions/
-                it 'should handle race conditions correctly.' do
+                it 'should handle race conditions correctly.', :race_conditions => true do
                     concurrency_level = 99
                     expect(ActiveRecord::Base.connection.pool.size).to eq(concurrency_level + 1)
                     inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id,available_amount: concurrency_level - 1,reserved_amount: 0)
@@ -246,7 +246,7 @@ RSpec.describe 'Inventory API', type: :request do
 
             context 'when multiple simultaneous users' do
                 # Based off https://blog.arkency.com/2015/09/testing-race-conditions/
-                it 'should handle race conditions correctly.' do
+                it 'should handle race conditions correctly.', :race_conditions => true do
                     concurrency_level = 99
                     expect(ActiveRecord::Base.connection.pool.size).to eq(concurrency_level + 1)
                     inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id, available_amount: 0,reserved_amount:  concurrency_level - 1)
@@ -311,7 +311,7 @@ RSpec.describe 'Inventory API', type: :request do
 
             context 'when multiple simultaneous users' do
                 # Based off https://blog.arkency.com/2015/09/testing-race-conditions/
-                it 'should handle race conditions correctly.' do
+                it 'should handle race conditions correctly.', :race_conditions => true do
                     concurrency_level = 99
                     expect(ActiveRecord::Base.connection.pool.size).to eq(concurrency_level + 1)
                     inventory         = FactoryBot.create(:inventory,distribution_center_id: @distribution_center.id,reserved_amount: concurrency_level - 1)

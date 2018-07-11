@@ -4,6 +4,7 @@ require_relative './abstract_inventory_amount_adjuster.rb'
 # Handles adding to the available amount (on-hand stock) of a given inventory item.
 class AddToAvailableAmount < AbstractInventoryAmountAdjuster
     
+    # Update the database.
     def update_db()
         # Don't update db if attributes not valid.
         if not valid?
