@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+require_relative './shared_examples.rb'
 
 RSpec.describe 'Products API', type: :request do
   describe 'GET /products' do
